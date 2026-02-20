@@ -35,10 +35,15 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:grid;grid-template-c
 
 
 /* ABOUT COHORT */
-.about-cohort-section{padding:80px 48px;max-width:760px;margin:0 auto;border-top:1px solid var(--border)}
+.about-cohort-section{padding:80px 0;max-width:1180px;margin:0 auto;border-top:1px solid var(--border)}
+.about-cohort-inner{display:flex;align-items:flex-start;gap:48px;padding:0 48px}
+.about-logos-col{flex-shrink:0;width:155px;padding-top:4px}
+.about-logos-col img{width:100%;height:auto;display:block}
+.about-cohort-content{flex:1;min-width:0}
 .about-cohort-heading{font-family:'Playfair Display',serif;font-size:28px;font-weight:400;font-style:italic;color:var(--text-primary);margin-bottom:32px}
 .about-cohort-body p{font-family:'Source Sans 3',sans-serif;font-size:17px;font-weight:400;color:var(--text-primary);line-height:1.75;margin-bottom:24px}
 .about-cohort-body p:last-child{margin-bottom:0}
+@media(max-width:900px){.about-logos-col{display:none}.about-cohort-inner{padding:0 24px}}
 /* APPLICATION FORM */
 .faces-band{padding:24px 0 28px;overflow:hidden}.faces-band-header{display:flex;align-items:center}.faces-band-label{font-family:'Source Sans 3',sans-serif;font-size:13px;font-weight:700;color:var(--text-primary);white-space:nowrap;padding:0 32px 0 48px;flex-shrink:0}.faces-track-wrap{overflow:hidden;flex:1}.faces-track{display:flex;align-items:center;gap:18px;animation:scroll-faces 50s linear infinite;width:max-content}.faces-track:hover{animation-play-state:paused}@keyframes scroll-faces{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}.face-avatar{width:72px;height:72px;border-radius:50%;overflow:hidden;flex-shrink:0;border:2px solid var(--border-light)}.face-avatar img{width:100%;height:100%;object-fit:cover;display:block}.apply-form-section{padding:60px 48px 80px;max-width:760px;margin:0 auto;border-top:1px solid var(--border)}
 .apply-form{margin-top:32px}
@@ -235,6 +240,9 @@ footer{padding:28px 24px;flex-direction:column;gap:16px;text-align:center}
 </section>
 
 <section class="about-cohort-section" id="about">
+<div class="about-cohort-inner">
+<div class="about-logos-col"><img src="images/logos1.png" alt="Fortune 100 companies including AMD, American Express, Walmart, Verizon, Netflix, Apple, and more"></div>
+<div class="about-cohort-content">
 <h2 class="about-cohort-heading">What is the CEO Cohort?</h2>
 <div class="about-cohort-body">
 <p>The CEO Cohort is the Tier 1 Institution for tech founders to make money. Our founders include bootstrapped to public company CEOs, seed stage to Series D ventures, from every industry and sector. You should apply if you want to 1000x your business and life.</p>
@@ -243,6 +251,9 @@ footer{padding:28px 24px;flex-direction:column;gap:16px;text-align:center}
 <p class="p1"><p>Trained by Bill Campbell, coach to Steve Jobs, Jeff Bezos, and Bill Gates, Jonathan&rsquo;s work has received endorsements from the likes of Elon Musk, Jack Dorsey, Matt Mullenweg, and Vitalik Buterin. He is Harvard&rsquo;s Valedictorian, former Goldman Sachs, and built an exit to community of $293+ Billion.</p>
 <p class="p1"><p>The CEO Cohort takes founders from heads-down product mode to scaled-up distribution mode through the Customer Financed Acquisition Protocol&trade;. It&rsquo;s the programmatic unlock for Founder Mode.</p>
 <p class="p1"><p>Today, the CEO Cohort alumni community is one of the most powerful communities in the world, and its members have a strong commitment to help one another. And you might be our next founder. If you want to join us, please do apply!</p>
+</div></div>
+<div class="about-logos-col"><img src="images/logos2.png" alt="VC firms including General Catalyst, Bessemer, Kleiner Perkins, Sequoia, Founders Fund, and more"></div>
+</div>
 </section>
 
 <section class="apply-form-section" id="apply-form">
