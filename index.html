@@ -353,27 +353,20 @@ footer{padding:28px 24px;flex-direction:column;gap:16px;text-align:center}
 <div class="step-panel" id="sp-panel-2">
 <h2 class="about-cohort-heading">Fortune 100 Kickoff</h2>
 <p class="sp-subtitle">Listen to the full Tier 1 Training - Close Fortune 100 Deals in 5 Vital Steps - to unlock your consult with Jonathan Herzog.</p>
-<div class="audio-player">
-<div class="audio-info-row">
-<div class="audio-thumb"><svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
-<div class="audio-track"><h3>Close Fortune 100 Deals in 5 Vital Steps</h3><p>Jonathan Herzog &middot; <span id="sp-dur">&ndash;:&ndash;&ndash;</span></p></div>
+<div style="margin:24px 0;border-radius:12px;overflow:hidden;">
+<iframe
+  style="border-radius:12px"
+  src="https://open.spotify.com/embed/episode/0oIHySXFrMVTwo4c7LigbJ?utm_source=generator"
+  width="100%" height="352" frameBorder="0"
+  allowfullscreen=""
+  allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+  loading="lazy">
+</iframe>
 </div>
-<div class="audio-prog-bg" id="sp-prog-bg"><div class="audio-prog-fill" id="sp-prog-fill"></div></div>
-<div class="audio-times"><span id="sp-cur">0:00</span><span id="sp-tot">&ndash;:&ndash;&ndash;</span></div>
-<div class="audio-ctrl-row">
-<button class="sk-btn" onclick="spSkip(-15)" title="Back 15 seconds">-15</button>
-<button class="pp-btn" id="sp-pp-btn" onclick="spTogglePlay()"><svg viewBox="0 0 24 24" id="sp-play-icon"><polygon points="6,3 20,12 6,21"/></svg><svg viewBox="0 0 24 24" id="sp-pause-icon" style="display:none"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg></button>
-<div class="sk-btn" style="opacity:0;pointer-events:none"></div>
-</div>
-<div class="spd-row">
-<button class="spd-btn" onclick="spSetSpeed(1,this)">1&times;</button>
-<button class="spd-btn" onclick="spSetSpeed(1.5,this)">1.5&times;</button>
-<button class="spd-btn spd-on" onclick="spSetSpeed(2,this)">2&times; &#9889;</button>
-</div>
-</div>
+<p style="text-align:center;font-family:'Source Sans 3',sans-serif;font-size:13px;color:var(--text-muted);margin-bottom:24px;line-height:1.6;">&#128161; You can swipe out of this browser — the audio will keep playing via Spotify.</p>
 <div class="listen-track" id="sp-listen-track">
-<div class="listen-pct" id="sp-listen-pct">0%</div>
-<div class="listen-copy"><strong>Listen to 90% to unlock your consult</strong><br>You must complete the session to proceed</div>
+<div class="listen-pct" id="sp-listen-pct">20:00</div>
+<div class="listen-copy"><strong>Consult unlocks after full listen</strong><br>Timer started — listen at 2× speed in Spotify to finish in 20 min</div>
 </div>
 <div class="listen-complete" id="sp-listen-complete"><p>&#10003; Session complete — your consult is unlocked</p></div>
 <div style="text-align:center;margin-top:24px"><button type="button" class="hero-apply-btn" id="sp-btn-2" disabled onclick="spGoTo(3)">Book Your Consult with Jonathan &rarr;</button></div>
@@ -381,15 +374,23 @@ footer{padding:28px 24px;flex-direction:column;gap:16px;text-align:center}
 
 <div class="step-panel" id="sp-panel-3">
 <h2 class="about-cohort-heading">Book Your Consult</h2>
-<p class="sp-subtitle">You’ve done the work — now let’s talk. Select a time below for a 1-on-1 strategy session with Jonathan Herzog.</p>
+<p class="sp-subtitle">Select a time below for a 1-on-1 consultation with Jonathan Herzog.</p>
 <iframe src="https://cal.com/foundersvc/25min?embed=true" class="cal-iframe" title="Book a consult with Jonathan Herzog"></iframe>
 </div>
 
-<audio id="sp-audio" preload="metadata"><source src="Fortune100Kickoff.mp3" type="audio/mpeg"></audio>
 </section>
 <script>
-var spStep=1,spPlaying=false,spSpeed=2,spMaxTime=0,SP_THRESHOLD=0.90;
-var spAudio=document.getElementById('sp-audio');
+function spSaveTs(key,val){
+  try{localStorage.setItem(key,val.toString());}catch(e){}
+  try{document.cookie=key+'='+val+';path=/;max-age=86400;SameSite=Lax';}catch(e){}
+}
+function spGetTs(key){
+  try{var ls=localStorage.getItem(key);if(ls)return parseInt(ls,10);}catch(e){}
+  var m=document.cookie.match(new RegExp("(?:^|;\\s*)"+key+"=(\\d+)"));
+  if(m)return parseInt(m[1],10);
+  return null;
+}
+var spStep=1;
 var spNameEl=document.getElementById('sp-name');
 var spEmailEl=document.getElementById('sp-email');
 var spBtn1=document.getElementById('sp-btn-1');
@@ -417,40 +418,37 @@ function spGoTo(step){
     var pos=target.getBoundingClientRect().top-container.getBoundingClientRect().top+container.scrollTop;
     container.scrollTo({top:pos,behavior:'smooth'});
   }
-  if(step===2)spAudio.playbackRate=spSpeed;
-  if(step===3){spAudio.pause();spPlaying=false;document.getElementById('sp-play-icon').style.display='block';document.getElementById('sp-pause-icon').style.display='none';}
+  if(step===2)startListenTimer();
 }
-function spTogglePlay(){
-  if(spPlaying){spAudio.pause();}else{spAudio.play();}
-  spPlaying=!spPlaying;
-  document.getElementById('sp-play-icon').style.display=spPlaying?'none':'block';
-  document.getElementById('sp-pause-icon').style.display=spPlaying?'block':'none';
+var LISTEN_SECS=20*60;
+var LISTEN_KEY='ceo_cohort_listen_start';
+var listenStart=null,listenInterval=null;
+function startListenTimer(){
+  var stored=spGetTs(LISTEN_KEY);
+  if(stored){listenStart=stored;}else{listenStart=Date.now();spSaveTs(LISTEN_KEY,listenStart);}
+  if(listenInterval)clearInterval(listenInterval);
+  updateListenTimer();
+  listenInterval=setInterval(updateListenTimer,1000);
 }
-function spSkip(sec){if(sec>0)return;if(spAudio.duration)spAudio.currentTime=Math.max(0,spAudio.currentTime+sec);}
-function spSetSpeed(speed,btn){spSpeed=speed;spAudio.playbackRate=speed;document.querySelectorAll('.spd-btn').forEach(function(b){b.classList.remove('spd-on');});btn.classList.add('spd-on');if(spAudio.duration)document.getElementById('sp-tot').textContent=spFmt(spAudio.duration/speed);}
-function spFmt(sec){var m=Math.floor(sec/60),s=Math.floor(sec%60);return m+':'+(s<10?'0':'')+s;}
-spAudio.addEventListener('loadedmetadata',function(){document.getElementById('sp-dur').textContent=spFmt(spAudio.duration);document.getElementById('sp-tot').textContent=spFmt(spAudio.duration/spSpeed);});
-spAudio.addEventListener('timeupdate',function(){
-  if(!spAudio.duration)return;
-  if(spAudio.currentTime>spMaxTime)spMaxTime=spAudio.currentTime;
-  var pct=spMaxTime/spAudio.duration;
-  document.getElementById('sp-prog-fill').style.width=(spAudio.currentTime/spAudio.duration*100)+'%';
-  document.getElementById('sp-cur').textContent=spFmt(spAudio.currentTime);
-  document.getElementById('sp-tot').textContent=spFmt(spAudio.duration/spSpeed);
-  document.getElementById('sp-listen-pct').textContent=Math.min(100,Math.round(pct*100))+'%';
-  if(pct>=SP_THRESHOLD){
+function updateListenTimer(){
+  var elapsed=Math.floor((Date.now()-listenStart)/1000);
+  var rem=Math.max(0,LISTEN_SECS-elapsed);
+  var mm=Math.floor(rem/60),ss=rem%60;
+  var el=document.getElementById('sp-listen-pct');
+  if(el)el.textContent=mm+':'+(ss<10?'0':'')+ss;
+  if(rem<=0){
+    clearInterval(listenInterval);
     document.getElementById('sp-btn-2').disabled=false;
-    document.getElementById('sp-listen-track').style.display='none';
     document.getElementById('sp-listen-complete').style.display='block';
+    document.getElementById('sp-listen-track').style.display='none';
   }
-});
-spAudio.addEventListener('ended',function(){spPlaying=false;document.getElementById('sp-play-icon').style.display='block';document.getElementById('sp-pause-icon').style.display='none';});
-document.getElementById('sp-prog-bg').addEventListener('click',function(e){if(!spAudio.duration)return;var rect=this.getBoundingClientRect();var target=(e.clientX-rect.left)/rect.width*spAudio.duration;if(target>spMaxTime)return;spAudio.currentTime=target;});
-// COUNTDOWN TIMER (2 hours from first visit, persists via localStorage)
+}
+// Resume timer if returning visitor already started step 2
+if(spGetTs(LISTEN_KEY))startListenTimer();
 var CD_KEY='ceo_cohort_ts';
-var cdTs=localStorage.getItem(CD_KEY);
-if(!cdTs){cdTs=Date.now();localStorage.setItem(CD_KEY,String(cdTs));}
-var cdExpiry=parseInt(cdTs)+1*3600000;
+var cdTs=spGetTs(CD_KEY);
+if(!cdTs){cdTs=Date.now();spSaveTs(CD_KEY,cdTs);}
+var cdExpiry=cdTs+3600000;
 function cdUpdate(){
   var secs=Math.max(0,Math.floor((cdExpiry-Date.now())/1000));
   var h=Math.floor(secs/3600),m=Math.floor((secs%3600)/60),s=secs%60;
@@ -459,7 +457,7 @@ function cdUpdate(){
   document.getElementById('cd-s').textContent=String(s).padStart(2,'0');
   if(secs<=1800){
     document.getElementById('cd-bar').classList.add('cd-urgent');
-    document.getElementById('cd-label').textContent=secs<=600?'\u26a0 Expiring soon':'Access closing soon';
+    document.getElementById('cd-label').textContent=secs<=300?'⚠ Expiring soon':'Access closing soon';
     document.getElementById('cd-hint').textContent='Time is running out';
   }
 }
