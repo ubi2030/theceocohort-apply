@@ -421,26 +421,30 @@ function spGoTo(step){
   }
 }
 var LISTEN_DONE_KEY='ceo_cohort_listen_done';
-var vimeoPlayer=null,vmMaxPct=0;
+var vimeoPlayer=null,vmMaxSecs=0,vmDuration=0,vmBlocking=false;
 function initVimeoPlayer(){
   if(vimeoPlayer)return;
   var iframe=document.getElementById('vimeo-player');
   if(!iframe||typeof Vimeo==='undefined')return;
   vimeoPlayer=new Vimeo.Player(iframe);
+  vimeoPlayer.getDuration().then(function(d){vmDuration=d;});
   vimeoPlayer.on('timeupdate',function(data){
-    if(data.percent>vmMaxPct)vmMaxPct=data.percent;
-    var pct=Math.min(100,Math.round(vmMaxPct*100));
-    var el=document.getElementById('sp-listen-pct');
-    if(el)el.textContent=pct+'%';
-    if(vmMaxPct>=0.90)unlockConsult();
+    if(!vmBlocking&&data.seconds>vmMaxSecs&&data.seconds<=vmMaxSecs+2){
+      vmMaxSecs=data.seconds;
+    }
+    if(vmDuration>0){
+      var pct=Math.min(100,Math.round(vmMaxSecs/vmDuration*100));
+      var el=document.getElementById('sp-listen-pct');
+      if(el)el.textContent=pct+'%';
+      if(vmMaxSecs/vmDuration>=0.90)unlockConsult();
+    }
   });
   vimeoPlayer.on('seeked',function(data){
-    vimeoPlayer.getDuration().then(function(duration){
-      var maxAllowed=vmMaxPct*duration;
-      if(data.seconds>maxAllowed+1){
-        vimeoPlayer.setCurrentTime(maxAllowed);
-      }
-    });
+    if(vmBlocking)return;
+    if(data.seconds>vmMaxSecs+1){
+      vmBlocking=true;
+      vimeoPlayer.setCurrentTime(vmMaxSecs).then(function(){vmBlocking=false;});
+    }
   });
   vimeoPlayer.on('ended',function(){unlockConsult();});
 }
