@@ -104,6 +104,24 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:grid;grid-template-c
 .cal-iframe{width:100%;min-height:700px;border:none;border-radius:6px;margin-top:20px;display:block}
 @media(max-width:600px){.step-conn{width:28px}.cal-iframe{min-height:900px}}
 
+/* COUNTDOWN BAR */
+.cd-bar{position:sticky;top:64px;z-index:99;background:var(--bg);border-bottom:1px solid var(--border);padding:10px 48px;display:flex;align-items:center;justify-content:center;gap:24px;transition:background .5s ease,border-color .5s ease}
+.cd-bar.cd-urgent{background:#fff9f9;border-bottom-color:rgba(192,57,43,0.3)}
+.cd-label{font-family:'Source Sans 3',sans-serif;font-size:12px;color:var(--text-muted);white-space:nowrap;transition:color .5s}
+.cd-bar.cd-urgent .cd-label{color:#c0392b}
+.cd-timer{display:flex;align-items:flex-start;gap:3px}
+.cd-unit{display:flex;flex-direction:column;align-items:center;min-width:32px}
+.cd-num{font-family:'Source Sans 3',sans-serif;font-size:17px;font-weight:700;color:var(--gold);font-variant-numeric:tabular-nums;line-height:1;transition:color .5s}
+.cd-bar.cd-urgent .cd-num{color:#c0392b;animation:cdPulse 2s ease-in-out infinite}
+.cd-unit-lbl{font-family:'Source Sans 3',sans-serif;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-top:2px}
+.cd-sep{font-size:14px;color:var(--text-muted);margin:0 1px;line-height:1}
+.cd-hint{font-family:'Source Sans 3',sans-serif;font-size:11px;color:var(--gold-dark);white-space:nowrap;transition:color .5s}
+.cd-bar.cd-urgent .cd-hint{color:#c0392b}
+@keyframes cdPulse{0%,100%{opacity:1}50%{opacity:0.5}}
+/* Step 1 training title */
+.sp-training-title{font-family:'Playfair Display',serif;font-size:24px;font-weight:400;font-style:italic;color:var(--text-primary);margin-bottom:24px;line-height:1.3}
+@media(max-width:600px){.cd-bar{gap:12px;padding:10px 16px}.cd-hint{display:none}}
+
 /* CAROUSEL */
 .carousel-section{padding:40px 0 60px;overflow:hidden}
 .carousel-track{display:flex;animation:scroll-left 60s linear infinite;width:max-content}
@@ -239,6 +257,18 @@ footer{padding:28px 24px;flex-direction:column;gap:16px;text-align:center}
 </div>
 </nav>
 
+<div class="cd-bar" id="cd-bar">
+<div class="cd-label" id="cd-label">Your private access expires in</div>
+<div class="cd-timer">
+<div class="cd-unit"><div class="cd-num" id="cd-h">02</div><div class="cd-unit-lbl">HRS</div></div>
+<div class="cd-sep">:</div>
+<div class="cd-unit"><div class="cd-num" id="cd-m">00</div><div class="cd-unit-lbl">MIN</div></div>
+<div class="cd-sep">:</div>
+<div class="cd-unit"><div class="cd-num" id="cd-s">00</div><div class="cd-unit-lbl">SEC</div></div>
+</div>
+<div class="cd-hint" id="cd-hint">Listen now &middot; Book before it&rsquo;s gone</div>
+</div>
+
 <section class="hero">
 <h1 class="hero-headline fade-up">The CEO Cohort turns founders into<br><em>trillion dollar CEOs</em></h1>
 <div class="hero-footnote fade-up"><p class="footnote-text">&ldquo;If accelerators take you from 0 to 1, The CEO Cohort takes you from 1 to n.&rdquo; &mdash; Jonathan Herzog</p></div>
@@ -313,7 +343,7 @@ footer{padding:28px 24px;flex-direction:column;gap:16px;text-align:center}
 
 <div class="step-panel sp-visible" id="sp-panel-1">
 <h2 class="about-cohort-heading">Application</h2>
-<p class="sp-subtitle">Close Fortune 100 Deals in 5 Vital Steps: Free Tier 1 Training</p>
+<p class="sp-training-title">Close Fortune 100 Deals in 5 Vital Steps: Free Tier 1 Training</p>
 <div class="faces-band"><div class="faces-band-header"><div class="faces-track-wrap"><div class="faces-track"><div class="face-avatar"><img src="images/img-1.jpg" alt="joerogers"></div><div class="face-avatar"><img src="images/img-2.jpg" alt="nathaniel"></div><div class="face-avatar"><img src="images/img-3.jpg" alt="ashleigh"></div><div class="face-avatar"><img src="images/img-4.jpg" alt="cornelius"></div><div class="face-avatar"><img src="images/img-5.jpg" alt="vignan"></div><div class="face-avatar"><img src="images/img-6.jpg" alt="andrewyang"></div><div class="face-avatar"><img src="images/img-7.jpg" alt="davidi"></div><div class="face-avatar"><img src="images/img-8.jpg" alt="marc"></div><div class="face-avatar"><img src="images/img-9.jpg" alt="mark"></div><div class="face-avatar"><img src="images/img-10.jpg" alt="sumit"></div><div class="face-avatar"><img src="images/img-11.jpg" alt="tess"></div><div class="face-avatar"><img src="images/img-12.jpg" alt="larry"></div><div class="face-avatar"><img src="images/img-13.jpg" alt="balaji"></div><div class="face-avatar"><img src="images/img-14.jpg" alt="chelsie"></div><div class="face-avatar"><img src="images/img-15.jpg" alt="suman"></div><div class="face-avatar"><img src="images/img-16.jpg" alt="solon"></div><div class="face-avatar"><img src="images/img-17.jpg" alt="vitalik"></div><div class="face-avatar"><img src="images/img-18.jpg" alt="ben"></div><div class="face-avatar"><img src="images/img-19.jpg" alt="chris"></div><div class="face-avatar"><img src="images/img-1.jpg" alt="joerogers"></div><div class="face-avatar"><img src="images/img-2.jpg" alt="nathaniel"></div><div class="face-avatar"><img src="images/img-3.jpg" alt="ashleigh"></div><div class="face-avatar"><img src="images/img-4.jpg" alt="cornelius"></div><div class="face-avatar"><img src="images/img-5.jpg" alt="vignan"></div><div class="face-avatar"><img src="images/img-6.jpg" alt="andrewyang"></div><div class="face-avatar"><img src="images/img-7.jpg" alt="davidi"></div><div class="face-avatar"><img src="images/img-8.jpg" alt="marc"></div><div class="face-avatar"><img src="images/img-9.jpg" alt="mark"></div><div class="face-avatar"><img src="images/img-10.jpg" alt="sumit"></div><div class="face-avatar"><img src="images/img-11.jpg" alt="tess"></div><div class="face-avatar"><img src="images/img-12.jpg" alt="larry"></div><div class="face-avatar"><img src="images/img-13.jpg" alt="balaji"></div><div class="face-avatar"><img src="images/img-14.jpg" alt="chelsie"></div><div class="face-avatar"><img src="images/img-15.jpg" alt="suman"></div><div class="face-avatar"><img src="images/img-16.jpg" alt="solon"></div><div class="face-avatar"><img src="images/img-17.jpg" alt="vitalik"></div><div class="face-avatar"><img src="images/img-18.jpg" alt="ben"></div><div class="face-avatar"><img src="images/img-19.jpg" alt="chris"></div></div></div></div></div>
 <div class="form-group" style="margin-top:24px"><label for="sp-name">Full Name</label><input type="text" id="sp-name" name="fullName" placeholder="Jane Smith" autocomplete="name"></div>
 <div class="form-group"><label for="sp-email">Email Address</label><input type="email" id="sp-email" name="email" placeholder="you@company.com" autocomplete="email"></div>
@@ -322,7 +352,7 @@ footer{padding:28px 24px;flex-direction:column;gap:16px;text-align:center}
 
 <div class="step-panel" id="sp-panel-2">
 <h2 class="about-cohort-heading">Fortune 100 Kickoff</h2>
-<p class="sp-subtitle">Listen to the full session to unlock your consult with Jonathan Herzog — the same framework delivered to Fortune 100 leadership teams.</p>
+<p class="sp-subtitle">Listen to the full Tier 1 Training - Close Fortune 100 Deals in 5 Vital Steps - to unlock your consult with Jonathan Herzog.</p>
 <div class="audio-player">
 <div class="audio-info-row">
 <div class="audio-thumb"><svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg></div>
@@ -331,9 +361,9 @@ footer{padding:28px 24px;flex-direction:column;gap:16px;text-align:center}
 <div class="audio-prog-bg" id="sp-prog-bg"><div class="audio-prog-fill" id="sp-prog-fill"></div></div>
 <div class="audio-times"><span id="sp-cur">0:00</span><span id="sp-tot">&ndash;:&ndash;&ndash;</span></div>
 <div class="audio-ctrl-row">
-<button class="sk-btn" onclick="spSkip(-15)">-15</button>
+<button class="sk-btn" onclick="spSkip(-15)" title="Back 15 seconds">-15</button>
 <button class="pp-btn" id="sp-pp-btn" onclick="spTogglePlay()"><svg viewBox="0 0 24 24" id="sp-play-icon"><polygon points="6,3 20,12 6,21"/></svg><svg viewBox="0 0 24 24" id="sp-pause-icon" style="display:none"><path d="M6 4h4v16H6V4zm8 0h4v16h-4V4z"/></svg></button>
-<button class="sk-btn" onclick="spSkip(15)">+15</button>
+<div class="sk-btn" style="opacity:0;pointer-events:none"></div>
 </div>
 <div class="spd-row">
 <button class="spd-btn" onclick="spSetSpeed(1,this)">1&times;</button>
@@ -388,6 +418,7 @@ function spGoTo(step){
     container.scrollTo({top:pos,behavior:'smooth'});
   }
   if(step===2)spAudio.playbackRate=spSpeed;
+  if(step===3){spAudio.pause();spPlaying=false;document.getElementById('sp-play-icon').style.display='block';document.getElementById('sp-pause-icon').style.display='none';}
 }
 function spTogglePlay(){
   if(spPlaying){spAudio.pause();}else{spAudio.play();}
@@ -395,7 +426,7 @@ function spTogglePlay(){
   document.getElementById('sp-play-icon').style.display=spPlaying?'none':'block';
   document.getElementById('sp-pause-icon').style.display=spPlaying?'block':'none';
 }
-function spSkip(sec){if(spAudio.duration)spAudio.currentTime=Math.max(0,Math.min(spAudio.duration,spAudio.currentTime+sec));}
+function spSkip(sec){if(sec>0)return;if(spAudio.duration)spAudio.currentTime=Math.max(0,spAudio.currentTime+sec);}
 function spSetSpeed(speed,btn){spSpeed=speed;spAudio.playbackRate=speed;document.querySelectorAll('.spd-btn').forEach(function(b){b.classList.remove('spd-on');});btn.classList.add('spd-on');if(spAudio.duration)document.getElementById('sp-tot').textContent=spFmt(spAudio.duration/speed);}
 function spFmt(sec){var m=Math.floor(sec/60),s=Math.floor(sec%60);return m+':'+(s<10?'0':'')+s;}
 spAudio.addEventListener('loadedmetadata',function(){document.getElementById('sp-dur').textContent=spFmt(spAudio.duration);document.getElementById('sp-tot').textContent=spFmt(spAudio.duration/spSpeed);});
@@ -414,7 +445,26 @@ spAudio.addEventListener('timeupdate',function(){
   }
 });
 spAudio.addEventListener('ended',function(){spPlaying=false;document.getElementById('sp-play-icon').style.display='block';document.getElementById('sp-pause-icon').style.display='none';});
-document.getElementById('sp-prog-bg').addEventListener('click',function(e){if(!spAudio.duration)return;var rect=this.getBoundingClientRect();spAudio.currentTime=(e.clientX-rect.left)/rect.width*spAudio.duration;});
+document.getElementById('sp-prog-bg').addEventListener('click',function(e){if(!spAudio.duration)return;var rect=this.getBoundingClientRect();var target=(e.clientX-rect.left)/rect.width*spAudio.duration;if(target>spMaxTime)return;spAudio.currentTime=target;});
+// COUNTDOWN TIMER (2 hours from first visit, persists via localStorage)
+var CD_KEY='ceo_cohort_ts';
+var cdTs=localStorage.getItem(CD_KEY);
+if(!cdTs){cdTs=Date.now();localStorage.setItem(CD_KEY,String(cdTs));}
+var cdExpiry=parseInt(cdTs)+2*3600000;
+function cdUpdate(){
+  var secs=Math.max(0,Math.floor((cdExpiry-Date.now())/1000));
+  var h=Math.floor(secs/3600),m=Math.floor((secs%3600)/60),s=secs%60;
+  document.getElementById('cd-h').textContent=String(h).padStart(2,'0');
+  document.getElementById('cd-m').textContent=String(m).padStart(2,'0');
+  document.getElementById('cd-s').textContent=String(s).padStart(2,'0');
+  if(secs<=1800){
+    document.getElementById('cd-bar').classList.add('cd-urgent');
+    document.getElementById('cd-label').textContent=secs<=600?'\u26a0 Expiring soon':'Access closing soon';
+    document.getElementById('cd-hint').textContent='Time is running out';
+  }
+}
+cdUpdate();
+setInterval(cdUpdate,1000);
 </script>
 <footer>
 <div class="footer-name">Jonathan Herzog</div>
