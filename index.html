@@ -418,7 +418,15 @@ function spGoTo(step){
     var pos=target.getBoundingClientRect().top-container.getBoundingClientRect().top+container.scrollTop;
     container.scrollTo({top:pos,behavior:'smooth'});
   }
-  if(step===2)startListenTimer();
+  if(step===2){
+    startListenTimer();
+    // Submit step 1 data to Formspree
+    var fd=new FormData();
+    fd.append('Full Name',spNameEl.value.trim());
+    fd.append('Email',spEmailEl.value.trim());
+    fd.append('Step','1 - Unlocked recording');
+    fetch('https://formspree.io/f/xreaapnn',{method:'POST',body:fd,headers:{Accept:'application/json'}}).catch(function(){});
+  }
 }
 var LISTEN_SECS=20*60;
 var LISTEN_KEY='ceo_cohort_listen_start';
