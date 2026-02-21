@@ -434,6 +434,14 @@ function initVimeoPlayer(){
     if(el)el.textContent=pct+'%';
     if(vmMaxPct>=0.90)unlockConsult();
   });
+  vimeoPlayer.on('seeked',function(data){
+    vimeoPlayer.getDuration().then(function(duration){
+      var maxAllowed=vmMaxPct*duration;
+      if(data.seconds>maxAllowed+1){
+        vimeoPlayer.setCurrentTime(maxAllowed);
+      }
+    });
+  });
   vimeoPlayer.on('ended',function(){unlockConsult();});
 }
 function unlockConsult(){
